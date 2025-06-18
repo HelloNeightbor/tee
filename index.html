@@ -702,7 +702,7 @@ fetch(`https://discord.com/api/guilds/${serverId}/widget.json`)
     document.getElementById('server-name').textContent = "Discord Server";
   });
 function loadDiscordUser(userId, suffix) {
-  fetch(`http://localhost:3000/discord-status?user=${userId}`)
+fetch(`https://your-render-subdomain.onrender.com/discord-status?user=${userId}`)
     .then(res => res.json())
     .then(data => {
       document.getElementById(`avatar${suffix}`).src = data.avatar;
