@@ -720,26 +720,27 @@ fetch(`https://your-render-subdomain.onrender.com/discord-status?user=${userId}`
      "1130322698438967307"  // Thay bằng ID thật người 2
    ];
 
-   userIds.forEach((id, index) => {
-     fetch(`/discord-status?user=${id}`)
-       .then(response => response.json())
-       .then(data => {
-         const profileDiv = document.getElementById(`discord-profile-${index + 1}`);
+  const API_URL = "https://your-render-subdomain.onrender.com"; // ← Thay bằng link đúng của bạn
 
-         profileDiv.innerHTML = `
-           <img src="${data.avatar}" width="64" height="64" />
-           <h2>${data.username}</h2>
-           <p>Trạng thái: ${data.status}</p>
-           <p>Hoạt động: ${data.activity}</p>
-         `;
-       })
-       .catch(err => {
-         const profileDiv = document.getElementById(`discord-profile-${index + 1}`);
-         profileDiv.innerHTML = `<p>❌ Không lấy được thông tin user ${id}</p>`;
-         console.error(err);
-       });
-   });
+userIds.forEach((id, index) => {
+  fetch(`${API_URL}/discord-status?user=${id}`)
+    .then(response => response.json())
+    .then(data => {
+      const profileDiv = document.getElementById(`discord-profile-${index + 1}`);
 
+      profileDiv.innerHTML = `
+        <img src="${data.avatar}" width="64" height="64" />
+        <h2>${data.username}</h2>
+        <p>Trạng thái: ${data.status}</p>
+        <p>Hoạt động: ${data.activity}</p>
+      `;
+    })
+    .catch(err => {
+      const profileDiv = document.getElementById(`discord-profile-${index + 1}`);
+      profileDiv.innerHTML = `<p>❌ Không lấy được thông tin user ${id}</p>`;
+      console.error(err);
+    });
+});
 // Gọi API với 2 user
 loadDiscordUser("626404653139099648", "1");
 loadDiscordUser("1130322698438967307", "2");
