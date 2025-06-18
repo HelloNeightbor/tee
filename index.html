@@ -723,7 +723,7 @@ fetch(`https://your-render-subdomain.onrender.com/discord-status?user=${userId}`
   const API_URL = "https://your-render-subdomain.onrender.com"; // ← Thay bằng link đúng của bạn
 
 userIds.forEach((id, index) => {
-  fetch(`${API_URL}/discord-status?user=${id}`)
+fetch(`${API_URL}/discord-status?user=${userId}`)
     .then(response => response.json())
     .then(data => {
       const profileDiv = document.getElementById(`discord-profile-${index + 1}`);
