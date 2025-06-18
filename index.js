@@ -5,33 +5,16 @@ require("dotenv").config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const GUILD_ID = "1287350045917581355";
+const GUILD_ID = process.env.GUILD_ID || "1287350045917581355";
 
 app.use(cors());
-app.use(express.static("public"));
 
+// ✅ Route kiểm tra hoạt động
 app.get("/", (req, res) => {
   res.send("🟢 Bot đang hoạt động!");
 });
-app.listen(PORT, () => console.log(`🌐 Web chạy tại http://localhost:${PORT}`));
 
-const client = new Client({
-  intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMembers,
-    GatewayIntentBits.GuildPresences,
-  ],
-});
-
-client.on("ready", () => {
-  console.log(`🤖 Bot online: ${client.user.tag}`);
-});
-
-client.on("error", console.error);
-process.on("unhandledRejection", console.error);
-
-client.login(process.env.DISCORD_TOKEN);
-
+// ✅ Route API lấy trạng thái Discord
 app.get("/discord-status", async (req, res) => {
   const userId = req.query.user;
   if (!userId) return res.status(400).json({ error: "Thiếu userId" });
@@ -56,14 +39,31 @@ app.get("/discord-status", async (req, res) => {
   }
 });
 
+// ✅ Khởi chạy server Express
 app.listen(PORT, () => {
-  console.log(`🌐 Web chạy tại http://localhost:${PORT}`);
+  console.log(`🌐 Server chạy tại http://localhost:${PORT}`);
 });
 
-// Giữ app chạy liên tục
-setInterval(
-  () => {
-    console.log("⏰ Vẫn hoạt động...");
-  },
-  1000 * 60 * 5,
-);
+// ✅ Khởi tạo bot Discord
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.GuildPresences,
+  ],
+});
+
+client.on("ready", () => {
+  console.log(`🤖 Bot online: ${client.user.tag}`);
+});
+
+client.on("error", console.error);
+process.on("unhandledRejection", console.error);
+
+// ✅ Đăng nhập bot Discord
+client.login(process.env.DISCORD_TOKEN);
+
+// ✅ Giữ app chạy với log mỗi 5 phút
+setInterval(() => {
+  console.log("⏰ Vẫn hoạt động...");
+}, 1000 * 60 * 5);
