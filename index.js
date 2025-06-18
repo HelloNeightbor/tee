@@ -2,7 +2,6 @@ const express = require("express");
 const cors = require("cors");
 const { Client, GatewayIntentBits } = require("discord.js");
 require("dotenv").config();
-const keep_alive = require("./keep_alive.js");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
