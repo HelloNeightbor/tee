@@ -740,14 +740,13 @@ fetch(`https://your-render-subdomain.onrender.com/discord-status?user=${userId}`
      "1130322698438967307"  // Thay bằng ID thật người 2
    ];
 
-  const API_URL = "https://your-render-subdomain.onrender.com"; // ← Thay bằng link đúng của bạn
+const API_URL = "https://tee-utpy.onrender.com";
 
 userIds.forEach((id, index) => {
-  fetch(`${API_URL}/discord-status?user=${id}`) // ← sửa lại thành id
+  fetch(`${API_URL}/discord-status?user=${id}`)
     .then(response => response.json())
     .then(data => {
       const profileDiv = document.getElementById(`discord-profile-${index + 1}`);
-
       profileDiv.innerHTML = `
         <img src="${data.avatar}" width="64" height="64" />
         <h2>${data.username}</h2>
