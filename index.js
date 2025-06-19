@@ -1,30 +1,35 @@
 const express = require("express");
 const cors = require("cors");
-const { Client, GatewayIntentBits } = require("discord.js");
+const { Client, GatewayIntentBits, Partials } = require("discord.js");
 require("dotenv").config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const GUILD_ID = process.env.GUILD_ID || "1287350045917581355";
 
+// Middleware
 app.use(cors());
 
-// ✅ Route kiểm tra hoạt động
+// Route kiểm tra
 app.get("/", (req, res) => {
   res.send("🟢 Bot đang hoạt động!");
 });
 
-// ✅ Route API lấy trạng thái Discord
+// Route lấy trạng thái Discord
 app.get("/discord-status", async (req, res) => {
   const userId = req.query.user;
   if (!userId) return res.status(400).json({ error: "Thiếu userId" });
 
   try {
     const guild = await client.guilds.fetch(GUILD_ID);
+
+    // Tải member
     let member = guild.members.cache.get(userId);
     if (!member) {
       member = await guild.members.fetch(userId);
     }
+
+    // Lấy presence
     const presence = member.presence;
 
     res.json({
@@ -39,19 +44,23 @@ app.get("/discord-status", async (req, res) => {
   }
 });
 
-// ✅ Khởi chạy server Express
+// Khởi chạy server
 app.listen(PORT, () => {
   console.log(`🌐 Server chạy tại http://localhost:${PORT}`);
 });
 
-// ✅ Khởi tạo bot Discord
+// Khởi tạo Discord Bot
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMembers,
     GatewayIntentBits.GuildPresences,
   ],
+  partials: [Partials.User, Partials.GuildMember],
 });
+
+// Đăng nhập bot
+client.login(process.env.DISCORD_TOKEN);
 
 client.on("ready", () => {
   console.log(`🤖 Bot online: ${client.user.tag}`);
@@ -60,10 +69,7 @@ client.on("ready", () => {
 client.on("error", console.error);
 process.on("unhandledRejection", console.error);
 
-// ✅ Đăng nhập bot Discord
-client.login(process.env.DISCORD_TOKEN);
-
-// ✅ Giữ app chạy với log mỗi 5 phút
+// Keep alive log
 setInterval(() => {
-  console.log("⏰ Vẫn hoạt động...");
+  console.log("⏰ Bot vẫn hoạt động...");
 }, 1000 * 60 * 5);
