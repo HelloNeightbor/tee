@@ -648,13 +648,14 @@ btn.addEventListener('click', () => {
   video.muted = false;
   video.play();
 
-  overlay.style.opacity = '0'; // 👈 Mờ dần
-  overlay.style.backdropFilter = 'blur(0px)'; // 👈 Giảm mờ từ từ
-  overlay.style.pointerEvents = 'none'; // 👈 Ngăn click lại
+  overlay.style.opacity = '0';
+  overlay.style.backdropFilter = 'blur(0px)';
+  overlay.style.pointerEvents = 'none';
 
   setTimeout(() => {
-    overlay.style.display = 'none'; // 👈 Ẩn hoàn toàn sau 10 giây
-  }, 10000);
+    overlay.style.display = 'none';
+    typeText(); // ✅ Gọi typing tại đây sau khi overlay ẩn
+  }, 1000);
 });
 btn.addEventListener('click', () => {
   video.muted = false;
