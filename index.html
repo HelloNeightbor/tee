@@ -570,7 +570,7 @@ font-family: 'Pacifico', cursive;
   </table>
 
  <script>
-  const firebaseConfig = {
+   const firebaseConfig = {
   apiKey: "AIzaSyAxxxxx...",
   authDomain: "loveu-2dab7.firebaseapp.com",
   databaseURL: "https://loveu-2dab7-default-rtdb.firebaseio.com",
@@ -594,9 +594,6 @@ font-family: 'Pacifico', cursive;
       document.getElementById("viewer-count").textContent = snapshot.val();
     });
   let totalSeconds = parseInt(localStorage.getItem('loveSeconds')) || 0;
-
-const startRef = db.ref("loveStartTime");
-
 // Lưu mốc thời gian bắt đầu nếu chưa có
 startRef.once("value", snapshot => {
   if (!snapshot.exists()) {
@@ -703,18 +700,18 @@ btn.addEventListener('click', () => {
     const rotateX = offsetY * 10; // góc tối đa xoay X
     const rotateY = offsetX * -10; // góc tối đa xoay Y (âm để ngược hướng)
 
-    table.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    table.style.transform = rotateX(${rotateX}deg) rotateY(${rotateY}deg);
   });
 const serverId = '1287350045917581355';
 
-fetch(`https://discord.com/api/guilds/${serverId}/widget.json`)
+fetch(https://discord.com/api/guilds/${serverId}/widget.json)
   .then(res => res.json())
   .then(data => {
     document.getElementById('server-name').textContent = data.name;
 
     if (data.icon) {
       const ext = data.icon.startsWith("a_") ? "gif" : "png";
-      const iconUrl = `https://cdn.discordapp.com/icons/${serverId}/${data.icon}.${ext}`;
+      const iconUrl = https://cdn.discordapp.com/icons/${serverId}/${data.icon}.${ext};
       document.getElementById('discord-icon').src = iconUrl;
     }
   })
@@ -722,23 +719,24 @@ fetch(`https://discord.com/api/guilds/${serverId}/widget.json`)
     document.getElementById('server-name').textContent = "Discord Server";
   });
 function loadDiscordUser(userId, suffix) {
-fetch(`https://your-render-subdomain.onrender.com/discord-status?user=${userId}`)
+fetch(https://your-render-subdomain.onrender.com/discord-status?user=${userId})
     .then(res => res.json())
     .then(data => {
-      document.getElementById(`avatar${suffix}`).src = data.avatar;
-      document.getElementById(`username${suffix}`).textContent = data.username;
-      document.getElementById(`status${suffix}`).textContent = "Trạng thái: " + data.status;
-      document.getElementById(`activity${suffix}`).textContent = "Đang hoạt động: " + data.activity;
+      document.getElementById(avatar${suffix}).src = data.avatar;
+      document.getElementById(username${suffix}).textContent = data.username;
+      document.getElementById(status${suffix}).textContent = "Trạng thái: " + data.status;
+      document.getElementById(activity${suffix}).textContent = "Đang hoạt động: " + data.activity;
     })
     .catch(err => {
       console.error(err);
-      document.getElementById(`user${suffix}`).innerHTML = "<p style='text-align:center;'>Không thể tải thông tin người dùng.</p>";
+      document.getElementById(user${suffix}).innerHTML = "<p style='text-align:center;'>Không thể tải thông tin người dùng.</p>";
     });
 }
    const userIds = [
      "626404653139099648", // Thay bằng ID thật người 1
      "1130322698438967307"  // Thay bằng ID thật người 2
    ];
+
 
 const API_URL = "https://tee-utpy.onrender.com";
 
@@ -763,14 +761,6 @@ userIds.forEach((id, index) => {
 // Gọi API với 2 user
 loadDiscordUser("626404653139099648", "1");
 loadDiscordUser("1130322698438967307", "2");
-    const startRef = db.ref("loveStartTime");
-
-startRef.once("value", snapshot => {
-  if (!snapshot.exists()) {
-    // Lưu thời gian hiện tại nếu chưa có
-    startRef.set(Date.now());
-  }
-});
 </script>
 
 </body>
