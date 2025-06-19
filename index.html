@@ -595,26 +595,46 @@ font-family: 'Pacifico', cursive;
     });
   let totalSeconds = parseInt(localStorage.getItem('loveSeconds')) || 0;
 
-  function updateTime() {
-    totalSeconds++;
-    localStorage.setItem('loveSeconds', totalSeconds);
+const startRef = db.ref("loveStartTime");
 
-    const seconds = totalSeconds % 60;
-    const minutes = Math.floor(totalSeconds / 60) % 60;
-    const hours = Math.floor(totalSeconds / 3600) % 24;
-    const days = Math.floor(totalSeconds / 86400) % 30;
-    const months = Math.floor(totalSeconds / (86400 * 30)) % 12;
-    const years = Math.floor(totalSeconds / (86400 * 30 * 12));
-
-    document.getElementById('years').textContent = years;
-    document.getElementById('months').textContent = months;
-    document.getElementById('days').textContent = days;
-    document.getElementById('hours').textContent = hours;
-    document.getElementById('minutes').textContent = minutes;
-    document.getElementById('seconds').textContent = seconds;
+// Lưu mốc thời gian bắt đầu nếu chưa có
+startRef.once("value", snapshot => {
+  if (!snapshot.exists()) {
+    // Ghi lại mốc thời gian bắt đầu yêu
+    startRef.set(Date.now());
   }
+});
 
-  setInterval(updateTime, 1000);
+let startTime = 0;
+
+// Lấy thời gian bắt đầu từ Firebase
+startRef.on("value", snapshot => {
+  startTime = snapshot.val();
+  updateLoveTime(); // Cập nhật lần đầu
+});
+
+// Hàm cập nhật thời gian yêu
+function updateLoveTime() {
+  const now = Date.now();
+  const totalSeconds = Math.floor((now - startTime) / 1000); // tính số giây đã trôi qua
+
+  const seconds = totalSeconds % 60;
+  const minutes = Math.floor(totalSeconds / 60) % 60;
+  const hours = Math.floor(totalSeconds / 3600) % 24;
+  const days = Math.floor(totalSeconds / 86400) % 30;
+  const months = Math.floor(totalSeconds / (86400 * 30)) % 12;
+  const years = Math.floor(totalSeconds / (86400 * 30 * 12));
+
+  document.getElementById('years').textContent = years;
+  document.getElementById('months').textContent = months;
+  document.getElementById('days').textContent = days;
+  document.getElementById('hours').textContent = hours;
+  document.getElementById('minutes').textContent = minutes;
+  document.getElementById('seconds').textContent = seconds;
+}
+
+// Cập nhật mỗi giây
+setInterval(updateLoveTime, 1000);
 
   // Auto play nhạc 1 lần khi click
   window.addEventListener('click', function playMusicOnce() {
@@ -723,7 +743,7 @@ fetch(`https://your-render-subdomain.onrender.com/discord-status?user=${userId}`
   const API_URL = "https://your-render-subdomain.onrender.com"; // ← Thay bằng link đúng của bạn
 
 userIds.forEach((id, index) => {
-fetch(`${API_URL}/discord-status?user=${userId}`)
+  fetch(`${API_URL}/discord-status?user=${id}`) // ← sửa lại thành id
     .then(response => response.json())
     .then(data => {
       const profileDiv = document.getElementById(`discord-profile-${index + 1}`);
@@ -744,6 +764,14 @@ fetch(`${API_URL}/discord-status?user=${userId}`)
 // Gọi API với 2 user
 loadDiscordUser("626404653139099648", "1");
 loadDiscordUser("1130322698438967307", "2");
+    const startRef = db.ref("loveStartTime");
+
+startRef.once("value", snapshot => {
+  if (!snapshot.exists()) {
+    // Lưu thời gian hiện tại nếu chưa có
+    startRef.set(Date.now());
+  }
+});
 </script>
 
 </body>
