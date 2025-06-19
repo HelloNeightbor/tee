@@ -644,6 +644,18 @@ setInterval(updateLoveTime, 1000);
   const overlay = document.getElementById('overlay');
   const video = document.getElementById('bg-video');
 
+const text = "Anh Sẽ Mãi Yêu Mỗi Em";
+const typingTarget = document.getElementById("typing-text");
+let i = 0;
+
+function typeText() {
+  if (i < text.length) {
+    typingTarget.innerHTML += text.charAt(i);
+    i++;
+    setTimeout(typeText, 80);
+  }
+}
+
 btn.addEventListener('click', () => {
   video.muted = false;
   video.play();
@@ -654,34 +666,9 @@ btn.addEventListener('click', () => {
 
   setTimeout(() => {
     overlay.style.display = 'none';
-    typeText(); // ✅ Gọi typing tại đây sau khi overlay ẩn
-  }, 1000);
+    typeText(); // ✅ Gọi typing sau khi overlay biến mất
+  }, 1000); // hoặc 2000ms nếu có hiệu ứng mờ dần
 });
-btn.addEventListener('click', () => {
-  video.muted = false;
-  video.play();
-
-  overlay.style.opacity = '0'; // 👈 Mờ dần
-  overlay.style.backdropFilter = 'blur(0px)'; // 👈 Giảm mờ dần
-  overlay.style.pointerEvents = 'none'; // 👈 Tránh click lại
-
-  setTimeout(() => {
-    overlay.style.display = 'none'; // 👈 Chỉ ẩn sau khi hiệu ứng xong
-  }, 10000); // 10 giây tương ứng với transition
-});
-  const text = "Anh Sẽ Mãi Yêu Mỗi Em";
-  const typingTarget = document.getElementById("typing-text");
-  let i = 0;
-
-  function typeText() {
-    if (i < text.length) {
-      typingTarget.innerHTML += text.charAt(i);
-      i++;
-      setTimeout(typeText, 80);
-    }
-  }
-
-  typeText();
 
   document.getElementById('overlay').addEventListener('click', () => {
     const video = document.getElementById('bg-video');
